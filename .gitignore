@@ -1,0 +1,7 @@
+# Khoá Google (service account) — không bao giờ đưa lên GitHub, ở bất kỳ thư mục nào
+.env*
+*.pem
+
+# Bản sao lưu app cũ (có .env.local và dữ liệu nội bộ) — chỉ giữ trên máy
+app-old-tasks/
+app/.backup-*/

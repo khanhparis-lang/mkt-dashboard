@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "app": {
+    "name": "Marketing Performance dashboard",
+    "tagline": "Theo dõi chi phí, doanh thu và ROAS theo kênh mỗi ngày",
+    "domain": "marketing",
+    "user": {
+      "name": "Bạn",
+      "first": "bạn"
+    }
+  },
+  "source": {
+    "type": "sheets",
+    "sheet": "marketpulse_campaign_daily",
+    "title": "marketpulse_campaign_daily"
+  },
+  "columns": [
+    {
+      "name": "date",
+      "label": "Ngày",
+      "type": "date",
+      "role": "DATE"
+    },
+    {
+      "name": "channel",
+      "label": "Kênh",
+      "type": "text",
+      "role": "PRIMARY_DIM",
+      "icons": {
+        "Google": "search",
+        "Facebook": "users",
+        "Email": "mail",
+        "TikTok": "video",
+        "Zalo": "message-circle"
+      }
+    },
+    {
+      "name": "campaign",
+      "label": "Chiến dịch",
+      "type": "text",
+      "role": "SECONDARY_DIM"
+    },
+    {
+      "name": "objective",
+      "label": "Mục tiêu",
+      "type": "text",
+      "role": "SECONDARY_DIM"
+    },
+    {
+      "name": "spend",
+      "label": "Chi phí",
+      "type": "number",
+      "role": "METRIC",
+      "format": "money"
+    },
+    {
+      "name": "impressions",
+      "label": "Hiển thị",
+      "type": "number",
+      "role": "METRIC",
+      "format": "int"
+    },
+    {
+      "name": "clicks",
+      "label": "Lượt nhấp",
+      "type": "number",
+      "role": "METRIC",
+      "format": "int"
+    },
+    {
+      "name": "leads",
+      "label": "Lead",
+      "type": "number",
+      "role": "METRIC",
+      "format": "int"
+    },
+    {
+      "name": "qualified_leads",
+      "label": "Lead đạt chuẩn",
+      "type": "number",
+      "role": "METRIC",
+      "format": "int"
+    },
+    {
+      "name": "conversions",
+      "label": "Conversion",
+      "type": "number",
+      "role": "METRIC",
+      "format": "int"
+    },
+    {
+      "name": "revenue",
+      "label": "Doanh thu",
+      "type": "number",
+      "role": "METRIC",
+      "format": "money"
+    },
+    {
+      "name": "campaign_budget",
+      "label": "Ngân sách",
+      "type": "number",
+      "role": "ATTRIBUTE",
+      "agg": "max",
+      "entity": "campaign",
+      "format": "money"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "spend",
+      "label": "Chi phí",
+      "col": "spend",
+      "format": "money",
+      "better": "lower",
+      "icon": "coins"
+    },
+    {
+      "key": "revenue",
+      "label": "Doanh thu",
+      "col": "revenue",
+      "format": "money",
+      "better": "higher",
+      "icon": "trending-up"
+    },
+    {
+      "key": "conversions",
+      "label": "Conversion",
+      "col": "conversions",
+      "format": "int",
+      "better": "higher",
+      "icon": "target"
+    },
+    {
+      "key": "leads",
+      "label": "Lead",
+      "col": "leads",
+      "format": "int",
+      "better": "higher"
+    },
+    {
+      "key": "roas",
+      "label": "ROAS",
+      "num": [
+        "revenue"
+      ],
+      "den": [
+        "spend"
+      ],
+      "format": "x",
+      "better": "higher",
+      "icon": "chart-pie"
+    },
+    {
+      "key": "cpl",
+      "label": "CPL",
+      "num": [
+        "spend"
+      ],
+      "den": [
+        "leads"
+      ],
+      "format": "money",
+      "better": "lower",
+      "icon": "gauge"
+    },
+    {
+      "key": "cpa",
+      "label": "CPA",
+      "num": [
+        "spend"
+      ],
+      "den": [
+        "conversions"
+      ],
+      "format": "money",
+      "better": "lower"
+    },
+    {
+      "key": "ctr",
+      "label": "CTR",
+      "num": [
+        "clicks"
+      ],
+      "den": [
+        "impressions"
+      ],
+      "format": "pct",
+      "better": "higher"
+    },
+    {
+      "key": "budget_use",
+      "label": "% ngân sách đã dùng",
+      "num": [
+        "spend"
+      ],
+      "den": [
+        "campaign_budget"
+      ],
+      "format": "pct",
+      "better": "lower",
+      "window": "all"
+    },
+    {
+      "key": "impressions",
+      "label": "Hiển thị",
+      "col": "impressions",
+      "format": "int",
+      "better": "higher"
+    },
+    {
+      "key": "clicks",
+      "label": "Lượt nhấp",
+      "col": "clicks",
+      "format": "int",
+      "better": "higher"
+    },
+    {
+      "key": "qualified_leads",
+      "label": "Lead đạt chuẩn",
+      "col": "qualified_leads",
+      "format": "int",
+      "better": "higher"
+    }
+  ],
+  "kpis": [
+    "spend",
+    "revenue",
+    "conversions",
+    "cpl",
+    "roas"
+  ],
+  "params": [
+    "spend",
+    "revenue",
+    "conversions",
+    "roas"
+  ],
+  "defaultParam": "revenue",
+  "donutMetric": "spend",
+  "matrixMetrics": [
+    "spend",
+    "revenue",
+    "conversions",
+    "cpl",
+    "roas"
+  ],
+  "tableMetrics": [
+    "spend",
+    "revenue",
+    "leads",
+    "conversions",
+    "cpl",
+    "roas"
+  ],
+  "pages": {
+    "primary": "channel",
+    "secondary": "campaign",
+    "filter": "objective",
+    "primaryIcon": "chart-pie",
+    "secondaryIcon": "megaphone"
+  },
+  "thresholds": [
+    {
+      "key": "cpl_max",
+      "label": "CPL cảnh báo",
+      "kind": "unit_cost",
+      "metric": "cpl",
+      "op": ">",
+      "value": 250000,
+      "rule": "playbook"
+    },
+    {
+      "key": "roas_loss",
+      "label": "Ngưỡng lỗ ROAS",
+      "kind": "loss",
+      "metric": "roas",
+      "op": "<",
+      "value": 1,
+      "rule": "breakeven"
+    },
+    {
+      "key": "roas_target",
+      "label": "Mục tiêu ROAS",
+      "kind": "target",
+      "metric": "roas",
+      "op": ">=",
+      "value": 4,
+      "rule": "playbook"
+    },
+    {
+      "key": "budget_burn",
+      "label": "Cạn ngân sách",
+      "kind": "resource",
+      "metric": "budget_use",
+      "op": ">",
+      "value": 0.8,
+      "rule": "playbook",
+      "alert": "Dùng >80% ngân sách"
+    }
+  ],
+  "alerts": {
+    "dim": "campaign"
+  },
+  "defaultDays": 30,
+  "export": {
+    "separator": ";",
+    "filename": "marketing-performance-dashboard"
+  },
+  "design": {
+    "system": "monochrome"
+  },
+  "spec": {
+    "goal": "Dashboard này giúp trưởng nhóm marketing thấy chi phí, doanh thu, ROAS theo kênh và chiến dịch mỗi ngày để quyết định dồn hay cắt ngân sách của từng kênh, từng chiến dịch. Mốc xét: CPL > 250.000 (cảnh báo); ROAS < 1,00x (lỗ); ROAS ≥ 4,00x (đạt mục tiêu); % ngân sách đã dùng > 80,0% (cạn nguồn lực).",
+    "users": [
+      {
+        "group": "Trưởng nhóm marketing",
+        "when": "Sáng thứ Hai và khi duyệt ngân sách",
+        "decides": "Dồn ngân sách vào kênh nào, dừng chiến dịch nào"
+      },
+      {
+        "group": "Chuyên viên chạy quảng cáo",
+        "when": "Cuối mỗi ngày",
+        "decides": "Chỉnh giá thầu, nội dung của chiến dịch có CPL tăng"
+      }
+    ],
+    "questions": [
+      "Chiến dịch nào đang lỗ (ROAS < 1,00x) trong 30 ngày gần nhất?",
+      "Kênh nào có CPL > 250.000, và CPL đang tăng hay giảm so với kỳ trước?",
+      "ROAS toàn kỳ đang ở 3,16x: còn cách mốc ≥ 4,00x bao xa, kênh nào kéo xuống nhiều nhất?"
+    ],
+    "notAnswered": [
+      "Vì sao CPL của một kênh tăng? Dữ liệu không có giá thầu, nội dung quảng cáo hay tệp nhắm chọn.",
+      "Lead giao cho sale có thành đơn không? Dữ liệu không có mã lead hay trạng thái deal.",
+      "Kênh nào lãi thật? Dữ liệu không có giá vốn, nên ROAS chỉ là doanh thu chia chi phí quảng cáo."
+    ],
+    "notes": [
+      "Chiến dịch Awareness luôn có ROAS thấp vì mục tiêu là hiển thị, không phải bán. Lọc theo mục tiêu trước khi kết luận một chiến dịch lỗ."
+    ],
+    "later": [
+      "Đăng nhập bằng Google và giới hạn người được xem.",
+      "Đưa lên Internet để cả đội mở bằng trình duyệt."
+    ]
+  },
+  "assumptions": [],
+  "reference": {
+    "count": 1613,
+    "from": "2026-02-05",
+    "to": "2026-08-03",
+    "days": 180,
+    "defaultPeriod": {
+      "from": "2026-07-05",
+      "to": "2026-08-03",
+      "rows": 330
+    },
+    "groups": {
+      "channel": 5,
+      "campaign": 12
+    },
+    "kpisDefault": {
+      "spend": 437474143,
+      "revenue": 1158443629,
+      "conversions": 435,
+      "cpl": 202910.08487940632,
+      "roas": 2.648027654973885
+    },
+    "kpisAll": {
+      "spend": 2044772913,
+      "revenue": 6465244708,
+      "conversions": 2412,
+      "cpl": 170497.19944967897,
+      "roas": 3.1618399612475696
+    }
+  },
+  "_render": {
+    "at": "2026-10-18 22:00",
+    "files": {
+      "docs/1-spec/specification.md": "1ca1dd5c09747a95e046f86c97cf78644e1535dc",
+      "docs/2-design/design.md": "abed72ec9e31174832843146a1fbe8fb9fd08859",
+      "docs/2-design/layout.md": "4a050ca3a06fc8e9ac15f4f025ad51e0fba6189a",
+      "docs/2-design/components.md": "73c569dbff8059d2c9ebe16a4dd90444504a8f9a"
+    }
+  }
+}
