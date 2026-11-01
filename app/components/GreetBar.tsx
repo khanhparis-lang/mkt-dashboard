@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { CFG } from '@/lib/config';
 import { clockVN, greetVN, nowVN, todayVN } from '@/lib/format';
 import { Icon } from './Icon';
+import { firstName, useUser } from './UserContext';
 
 export type Chip = { key: string; label: string; remove: () => void };
 
@@ -15,7 +16,8 @@ export function GreetBar({ context, chips, onClear }: { context: string; chips: 
     const id = setInterval(() => setNow(nowVN()), 30_000);
     return () => clearInterval(id);
   }, []);
-  const first = CFG.app.user?.first ?? 'bạn';
+  const signed = useUser();
+  const first = signed ? firstName(signed.name) : CFG.app.user?.first ?? 'bạn';
   return (
     <div id="greet">
       <div style={{ minWidth: 0 }}>

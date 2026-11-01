@@ -1,11 +1,24 @@
 /* Sidebar 206px (thu gọn 58px), ngăn với nội dung bằng 1px hairline.
    Mục đang chọn tô nền --sub2 + chữ --ink, KHÔNG tô brand: brand để dành cho nút hành động chính. */
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { CFG, labelOf, lower } from '@/lib/config';
 import { vi } from '@/lib/format';
 import type { PageId } from '@/lib/types';
 import type { IconName } from '@/lib/icons';
 import { Icon } from './Icon';
+import { useUser } from './UserContext';
+
+/* Ảnh Google; ảnh lỗi hoặc không có thì dùng chữ cái đầu trên nền brand. */
+function Avatar({ name, picture }: { name: string; picture?: string }) {
+  const [broken, setBroken] = useState(false);
+  const initial = <span className="av">{name.charAt(0).toUpperCase()}</span>;
+  if (!picture || broken) return initial;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- ảnh ngoài (googleusercontent), không cần tối ưu
+    <img className="av img" src={picture} alt="" width={24} height={24}
+         referrerPolicy="no-referrer" onError={() => setBroken(true)} />
+  );
+}
 
 export type NavItem = { id: PageId; label: string; icon: IconName; group: string; badge?: number; alert?: boolean };
 
@@ -32,7 +45,9 @@ export function Sidebar({ items, page, onPage, onRail, shown, total, note, theme
   acctOpen: boolean;
   onAcct: () => void;
 }) {
-  const user = CFG.app.user ?? { name: 'Bạn', first: 'bạn' };
+  // Đã đăng nhập Google thì hiện đúng người đó; cấu hình chỉ là dự phòng khi chưa có phiên.
+  const signed = useUser();
+  const user: { name: string; email?: string; role?: string } = signed ?? CFG.app.user ?? { name: 'Bạn' };
   const nav: ReactNode[] = [];
   let group = '';
   for (const p of items) {
@@ -68,12 +83,19 @@ export function Sidebar({ items, page, onPage, onRail, shown, total, note, theme
           <div className="unote">{note}</div>
           <button className="ubtn" onClick={() => onPage('source')}>Xem nguồn dữ liệu</button>
         </div>
-        <div className="wrap">
+        <div className="wrap acctrow">
           <button className="acct" onClick={onAcct} title={user.email ?? user.name}>
-            <span className="av">{user.name.charAt(0).toUpperCase()}</span>
+            <Avatar name={user.name} picture={signed?.picture} />
             <span className="at"><span className="an">{user.name}</span><span className="ae">{user.email ?? user.role ?? ''}</span></span>
             <Icon name="chevron-down" className="lu-xs" />
           </button>
+          {signed && (
+            <form action="/api/auth/logout" method="post" className="logoutf">
+              <button type="submit" id="logout" title="Đăng xuất" aria-label="Đăng xuất">
+                <Icon name="log-out" className="lu-sm" />
+              </button>
+            </form>
+          )}
           <div className="pop up" hidden={!acctOpen}>
             <button className="r" onClick={onTheme}>
               <Icon name={theme === 'light' ? 'moon' : 'sun'} className="lu-sm" />
@@ -81,6 +103,14 @@ export function Sidebar({ items, page, onPage, onRail, shown, total, note, theme
             </button>
             <button className="r" onClick={() => onPage('source')}><Icon name="database" className="lu-sm" />Nguồn dữ liệu</button>
             <button className="r" onClick={onReset}><Icon name="rotate-ccw" className="lu-sm" />Đặt lại bộ lọc</button>
+            {signed && (
+              <>
+                <div className="sep" />
+                <form action="/api/auth/logout" method="post">
+                  <button type="submit" className="r" style={{ width: '100%' }}><Icon name="log-out" className="lu-sm" />Đăng xuất</button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       </div>

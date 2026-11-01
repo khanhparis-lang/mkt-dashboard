@@ -316,6 +316,17 @@ input,select{font:inherit;color:inherit}
           text-overflow:ellipsis}
 .acct .ae{display:block;font-size:10.5px;color:var(--ink3);white-space:nowrap;
           overflow:hidden;text-overflow:ellipsis}
+/* Tài khoản Google: ảnh đại diện + tên/email (mở menu) + nút Đăng xuất luôn thấy được */
+.acctrow{display:flex;align-items:center;gap:2px}
+.acctrow .acct{flex:1;min-width:0}
+.av.img{object-fit:cover;background:var(--sub2)}
+.logoutf{flex:0 0 auto;display:flex}
+#logout{width:28px;height:28px;border-radius:var(--r-sm);color:var(--ink3);
+        display:flex;align-items:center;justify-content:center}
+#logout:hover{background:var(--bad-bg);color:var(--bad)}
+#stage.rail .logoutf{display:none}   /* thu gọn: Đăng xuất vẫn nằm trong menu tài khoản */
+/* Nút Google là thẻ <a>: bỏ gạch chân, giữ nguyên hình nút */
+a#gbtn{text-decoration:none}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    MAIN + HEADER

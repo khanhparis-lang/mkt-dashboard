@@ -2,12 +2,18 @@
    GET /api/data?summary=1 → { meta, summary } (script check.mjs dùng để đối chiếu số tham chiếu)
    Không bao giờ trả về khoá: meta.env chỉ cho biết biến nào CÓ, không cho biết giá trị. */
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { SESSION_COOKIE, readSession } from '@/lib/auth';
 import { summary } from '@/lib/aggregate';
 import { SourceError, loadData } from '@/lib/data-source';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
+  // Lớp bảo vệ thứ hai sau proxy.ts: dữ liệu chỉ trả cho người có phiên hợp lệ.
+  if (!readSession((await cookies()).get(SESSION_COOKIE)?.value)) {
+    return NextResponse.json({ error: 'Chưa đăng nhập', hint: 'Đăng nhập bằng Google ở /login.' }, { status: 401 });
+  }
   try {
     const data = await loadData();
     if (new URL(req.url).searchParams.has('summary')) {

@@ -56,6 +56,8 @@ export default function DashboardPage() {
     else setSyncing(true);
     try {
       const res = await fetch('/api/data', { cache: 'no-store' });
+      // phiên hết hạn hoặc email vừa bị gỡ khỏi danh sách: quay về trang đăng nhập
+      if (res.status === 401) { window.location.assign('/login?next=/dashboard'); return; }
       const json = (await res.json()) as DataOk | DataErr;
       if ('error' in json) throw json;
       const prev = metaRef.current;

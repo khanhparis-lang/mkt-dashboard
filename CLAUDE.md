@@ -57,6 +57,12 @@ CPL > 250.000 là cảnh báo · ROAS < 1,00x là lỗ · mục tiêu ROAS ≥ 4
 Lệnh (chạy trong `app/`): `npm run dev` (port 3000; cũng có cấu hình `dashboard-app` trong
 `../.claude/launch.json`) · `npm run build` · `npm run lint`. Không có test.
 
+**Đăng nhập Google** (tự viết, không dùng thư viện — `app/lib/auth.ts`): `app/proxy.ts` chặn
+`/dashboard` và `/api/data` khi chưa có phiên; `app/app/dashboard/layout.tsx` và `/api/data` kiểm tra
+lại lần hai. Chỉ email trong `ALLOWED_EMAILS` (.env.local) được vào. Redirect URI cần khai trong
+Google Cloud Console: `<origin>/api/auth/callback/google`. Vì `/api/data` cần đăng nhập, `check.mjs`
+của `dashboard-build` sẽ nhận 401 — kiểm số bằng trình duyệt đã đăng nhập.
+
 `app/AGENTS.md`: Next.js 16 có breaking changes — đọc docs trong `app/node_modules/next/dist/docs/`
 trước khi viết code. Middleware ở `app/proxy.ts`.
 
